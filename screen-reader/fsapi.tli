@@ -1,0 +1,53 @@
+﻿// Created by Microsoft (R) C/C++ Compiler Version 14.00.23419.0 (e1902031).
+//
+// c:\users\lilmike\documents\prog\fsapi.tli
+//
+// Wrapper implementations for type library c:\program files\freedom scientific\shared\fsapi\1.0\fsapi.dll
+// compiler-generated file created 12/01/15 at 14:59:39 - DO NOT EDIT!
+
+#pragma once
+
+//
+// interface IJawsApi wrapper method implementations
+//
+
+inline VARIANT_BOOL IJawsApi::RunScript ( _bstr_t ScriptName ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_RunScript(ScriptName, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IJawsApi::SayString ( _bstr_t StringToSpeak, VARIANT_BOOL bFlush ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_SayString(StringToSpeak, bFlush, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline HRESULT IJawsApi::StopSpeech ( ) {
+    HRESULT _hr = raw_StopSpeech();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline VARIANT_BOOL IJawsApi::Enable ( VARIANT_BOOL vbNoDDIHooks ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_Enable(vbNoDDIHooks, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IJawsApi::Disable ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_Disable(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IJawsApi::RunFunction ( _bstr_t FunctionName ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_RunFunction(FunctionName, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
