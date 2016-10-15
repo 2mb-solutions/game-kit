@@ -32,6 +32,8 @@
 #include <OpenGLES/ES1/glext.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
 
 /* Apple defines OES versions for these - however the separated alpha ones
  * don't seem to work on the device and just crash.
@@ -39,6 +41,7 @@
 #define glBlendEquation glBlendEquationOES
 #define glBlendFuncSeparate glBlendFuncSeparateOES
 #define glBlendEquationSeparate glBlendEquationSeparateOES
+#define glRenderbufferStorageMultisampleEXT glRenderbufferStorageMultisampleAPPLE
 #ifdef GL_FUNC_ADD
 #undef GL_FUNC_ADD
 #undef GL_FUNC_SUBTRACT
@@ -77,12 +80,14 @@
 #ifndef ALLEGRO_RASPBERRYPI
 #define GL_FRAMEBUFFER_BINDING_EXT GL_FRAMEBUFFER_BINDING_OES
 #define GL_FRAMEBUFFER_EXT GL_FRAMEBUFFER_OES
+#define GL_RENDERBUFFER_EXT GL_RENDERBUFFER_OES
 #define glBlendEquation glBlendEquationOES
 #define glBlendFuncSeparate glBlendFuncSeparateOES
 #define glBlendEquationSeparate glBlendEquationSeparateOES
 #define glGenerateMipmapEXT glGenerateMipmapOES
 #define glBindFramebufferEXT glBindFramebufferOES
 #define glDeleteFramebuffersEXT glDeleteFramebuffersOES
+#define GL_DEPTH_COMPONENT24 GL_DEPTH_COMPONENT24_OES
 #else
 #define GL_FRAMEBUFFER_BINDING_EXT GL_FRAMEBUFFER_BINDING
 #define GL_FRAMEBUFFER_EXT GL_FRAMEBUFFER
@@ -110,6 +115,9 @@
 #include <EGL/eglext.h>
 #endif
 
+#include "allegro5/bitmap.h"
+#include "allegro5/display.h"
+#include "allegro5/shader.h"
 #include "allegro5/opengl/gl_ext.h"
 
 #ifdef ALLEGRO_WINDOWS
