@@ -14,7 +14,7 @@
 
 ALLEGRO_DISPLAY* game_window(string gameTitle)
 {
-log_open("error.log");
+log_open("errors.log");
 if(!al_init()) {
 log("Could not initialize allegro.\n");
 return NULL;
