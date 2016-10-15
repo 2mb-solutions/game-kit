@@ -39,6 +39,10 @@ return NULL;
 }
 ALLEGRO_DISPLAY* disp = al_create_display(640,480);
 if(!disp) {
+log("Could not create display.");
+	al_uninstall_audio();
+al_uninstall_keyboard();
+al_uninstall_system();
 return NULL;
 }
 else {
