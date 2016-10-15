@@ -1,4 +1,4 @@
-#define ALLEGRO_STATICLINK 1
+//#define ALLEGRO_STATICLINK 1
 #include <allegro5/allegro.h>
 #include <dynamic_menu.h>
 #include <iostream>

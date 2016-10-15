@@ -2,7 +2,7 @@
 //By Michael Taboada
 //Provided under the unlicense
 //see UNLICENSE for details
-#define ALLEGRO_STATICLINK 1
+//#define ALLEGRO_STATICLINK 1
 #include "sound.h"
 int sound::sounds=0;
 ALLEGRO_VOICE* sound::voice = NULL;
