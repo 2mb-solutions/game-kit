@@ -40,7 +40,7 @@ else {
 keyboard kb;
 int dir = 1;
 while(!kb.key_pressed(ALLEGRO_KEY_SPACE)) {
-if(kb.key_pressed(ALLEGRO_KEY_ESCAPE)) {
+if(kb.key_pressed(ALLEGRO_KEY_ESCAPE) || ((kb.key_down(ALLEGRO_KEY_ALT) || kb.key_down(ALLEGRO_KEY_ALTGR)) && kb.key_pressed(ALLEGRO_KEY_F4))) {
 return -100;
 }
 al_rest(wait);
@@ -80,7 +80,7 @@ else {
 keyboard kb;
 int dir = 1;
 while(!kb.key_pressed(ALLEGRO_KEY_SPACE)) {
-if(kb.key_pressed(ALLEGRO_KEY_ESCAPE)) {
+if(kb.key_pressed(ALLEGRO_KEY_ESCAPE) || ((kb.key_down(ALLEGRO_KEY_ALT) || kb.key_down(ALLEGRO_KEY_ALTGR)) && kb.key_pressed(ALLEGRO_KEY_F4))) {
 return -100;
 }
 al_rest(wait);
