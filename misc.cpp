@@ -1,4 +1,10 @@
-//#define ALLEGRO_STATICLINK 1
+/*
+ * miscelaneous helper functions
+ * By 2MB Solutions (https://2mb.solutions)
+ * Provided under the MIT license. See license.txt for details.
+ * Billy: https://stormdragon.tk
+ * Michael: https://michaeltaboada.me
+ */
 #include <allegro5/allegro.h>
 #include <dynamic_menu.h>
 #include <iostream>

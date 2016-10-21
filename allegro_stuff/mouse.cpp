@@ -1,7 +1,10 @@
-//mouse.cpp
-//By Michael Taboada
-//Provided under the unlicense
-//see UNLICENSE for details
+/*
+mouse.cpp: mouse handling and coordination class.
+ * By 2MB Solutions: https//2mb.solutions
+ * Released under the MIT license. See license.txt for details.
+ * Billy: https://stormdragon.tk/
+ * Michael: https://michaeltaboada.me
+ * */
 #include "mouse.h"
 
 mouse::mouse(void)

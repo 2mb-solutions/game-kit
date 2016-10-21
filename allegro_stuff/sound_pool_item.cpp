@@ -1,7 +1,10 @@
-//sound_pool_item.cpp
-//By Michael Taboada
-//Provided under the unlicense
-//see UNLICENSE for details
+/*
+sound_pool_item.cpp: To be used by the sound_pool.
+ * By 2MB Solutions: https//2mb.solutions
+ * Released under the MIT license. See license.txt for details.
+ * Billy: https://stormdragon.tk/
+ * Michael: https://michaeltaboada.me
+ * */
 #include "sound_pool_item.h"
 
 

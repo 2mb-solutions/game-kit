@@ -1,7 +1,10 @@
-//sound_pool.cpp
-//By Michael Taboada
-//Provided under the unlicense
-//see UNLICENSE for details
+/*
+sound_pool.cpp: Extremely easily manage many sound instances in a virtual space.
+ * By 2MB Solutions: https//2mb.solutions
+ * Released under the MIT license. See license.txt for details.
+ * Billy: https://stormdragon.tk/
+ * Michael: https://michaeltaboada.me
+ * */
 #include "sound_pool.h"
 
 /**
