@@ -1,8 +1,10 @@
-//sound.cpp
-//By Michael Taboada
-//Provided under the unlicense
-//see UNLICENSE for details
-//#define ALLEGRO_STATICLINK 1
+/*
+sound.cpp: sound handling class.
+ * By 2MB Solutions: https//2mb.solutions
+ * Released under the MIT license. See license.txt for details.
+ * Billy: https://stormdragon.tk/
+ * Michael: https://michaeltaboada.me
+ * */
 #include "sound.h"
 int sound::sounds=0;
 ALLEGRO_VOICE* sound::voice = NULL;

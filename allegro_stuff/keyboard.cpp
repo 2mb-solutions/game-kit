@@ -1,8 +1,10 @@
-//keyboard.cpp
-//By Michael Taboada
-//Provided under the unlicense
-//see UNLICENSE for details
-//#define ALLEGRO_STATICLINK 1
+/*
+keyboard.cpp: Easy access to the keyboard.
+ * By 2MB Solutions: https//2mb.solutions
+ * Released under the MIT license. See license.txt for details.
+ * Billy: https://stormdragon.tk/
+ * Michael: https://michaeltaboada.me
+ * */
 #include "keyboard.h"
 
 

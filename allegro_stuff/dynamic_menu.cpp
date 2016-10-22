@@ -1,4 +1,10 @@
-//#define ALLEGRO_STATICLINK 1
+/*
+dynamic_menu.cpp: a menu class supporting text, speech, and sounds!
+ * By 2MB Solutions: https//2mb.solutions
+ * Released under the MIT license. See license.txt for details.
+ * Billy: https://stormdragon.tk/
+ * Michael: https://michaeltaboada.me
+ * */
 #include "dynamic_menu.h"
 #include <iostream>
 

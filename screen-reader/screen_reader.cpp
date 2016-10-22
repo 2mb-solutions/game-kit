@@ -1,3 +1,10 @@
+/*
+screen_reader.cpp: Easy access to screen reader speech on windows, linux, and mac.
+ * By 2MB Solutions: https//2mb.solutions
+ * Released under the MIT license. See license.txt for details.
+ * Billy: https://stormdragon.tk/
+ * Michael: https://michaeltaboada.me
+ * */
 #include "screen_reader.h"
 #include <iostream>
 using namespace std;
