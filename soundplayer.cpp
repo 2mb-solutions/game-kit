@@ -43,6 +43,9 @@ while(!kb.key_pressed(ALLEGRO_KEY_SPACE)) {
 if(kb.key_pressed(ALLEGRO_KEY_ESCAPE) || ((kb.key_down(ALLEGRO_KEY_ALT) || kb.key_down(ALLEGRO_KEY_ALTGR)) && kb.key_pressed(ALLEGRO_KEY_F4))) {
 return -100;
 }
+if (kb.key_pressed(ALLEGRO_KEY_BACKSPACE)) {
+return -101;
+}
 al_rest(wait);
 s.set_pitch(s.get_pitch()+dir);
 if(s.get_pitch() >= max) {
