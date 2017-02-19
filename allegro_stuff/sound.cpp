@@ -228,7 +228,7 @@ bool sound::set_gain(double gain/**< [in] The gain in decibel.**/) {
 		gain = 0;
 	}
 	if(si) {
-		if(!al_set_sample_instance_gain(si, dB2lin(gain))) {
+		if(!al_set_sample_instance_gain(si, dB2lin(gain+1))) {
 			return false;
 		}
 	}
