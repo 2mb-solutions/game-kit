@@ -229,12 +229,8 @@ bool sound::set_gain(double gain/**< [in] The gain in decibel.**/) {
 	}
 	if(si) {
 		double new_gain = dB2lin(gain);
-		uint32_t version = al_get_allegro_version();
-		int major = version >> 24;
-		int minor = (version >> 16) & 255;
-		int revision = (version >> 8) & 255;
-		if(major == 5 && minor == 2 && revision == 2) {
-			new_gain = new_gain+(sqrt(2)-1);
+		if(al_get_channel_count(al_get_sample_instance_channels(si)) == 1) {
+		new_gain = new_gain+(sqrt(2)-1);
 		}
 		if(!al_set_sample_instance_gain(si, new_gain)) {
 			return false;
