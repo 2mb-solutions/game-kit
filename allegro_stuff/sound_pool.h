@@ -1,7 +1,10 @@
-//sound_pool.h
-//By Michael Taboada
-//Provided under the unlicense
-//see UNLICENSE for details
+/*
+ * sound_pool.h: Sound player in a virtual space.
+ *  * By 2MB Solutions: https//2mb.solutions
+ *   * Released under the MIT license. See license.txt for details.
+ *    * Billy: https://stormdragon.tk/
+ *     * Michael: https://michaeltaboada.me
+ *      * */
 #include <string>
 #include "sound_pool_item.h"
 
