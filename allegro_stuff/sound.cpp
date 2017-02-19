@@ -228,7 +228,15 @@ bool sound::set_gain(double gain/**< [in] The gain in decibel.**/) {
 		gain = 0;
 	}
 	if(si) {
-		if(!al_set_sample_instance_gain(si, dB2lin(gain+1))) {
+		double new_gain = dB2lin(gain);
+		uint32_t version = al_get_allegro_version();
+		int major = version >> 24;
+		int minor = (version >> 16) & 255;
+		int revision = (version >> 8) & 255;
+		if(major == 5 && minor == 2 && revision == 2) {
+			new_gain = new_gain+(sqrt(2)-1);
+		}
+		if(!al_set_sample_instance_gain(si, new_gain)) {
 			return false;
 		}
 	}
@@ -309,7 +317,9 @@ bool sound::play() {
 			paused = !al_set_sample_instance_playing(si, true);
 			return !paused;
 		}
-		return al_play_sample_instance(si);
+		bool p =  al_play_sample_instance(si);
+this->set_gain(gainval);
+	      	return p;
 	}
 	else {
 		return false;
