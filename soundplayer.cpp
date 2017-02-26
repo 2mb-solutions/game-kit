@@ -172,5 +172,6 @@ s.stop();
 ran = menu->run_extended("", "", ran, false);
 }
 delete vec;
+delete menu;
 }
 

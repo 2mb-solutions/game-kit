@@ -154,6 +154,7 @@ temp = fgets(ch, 32768, f);
 fclose(f);
 dynamic_menu* menu = create_menu(vec, vector<string>());
 menu->run_extended("", "Use your arrow keys to review the credits, and enter to return to the main menu.", 1, true);
+delete menu;
 }
 
 void instructions() {
@@ -170,5 +171,6 @@ void instructions() {
 	}
 	fclose(f);
 	dynamic_menu* menu = create_menu(vec, vector<string>());
-	menu->run_extended("", "Use your arrow keys to review the credits, and enter to return to the main menu.", 1, true);
+	menu->run_extended("", "Use your arrow keys to review the instructions, and enter to return to the main menu.", 1, true);
+delete menu;
 }
