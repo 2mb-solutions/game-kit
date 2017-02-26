@@ -229,9 +229,11 @@ bool sound::set_gain(double gain/**< [in] The gain in decibel.**/) {
 	}
 	if(si) {
 		double new_gain = dB2lin(gain);
+#ifdef __gnu_linux__
 		if(al_get_channel_count(al_get_sample_instance_channels(si)) == 1) {
 		new_gain = new_gain*sqrt(2);
 		}
+#endif
 		if(!al_set_sample_instance_gain(si, new_gain)) {
 			return false;
 		}
