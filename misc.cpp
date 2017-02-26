@@ -139,3 +139,36 @@ fi = NULL;
 }
 }
 
+void credits() {
+FILE* f = fopen("credits.txt", "r");
+if(!f) {
+return;
+}
+char ch[32768];
+vector<string> vec;
+char* temp = fgets(ch, 32768, f);
+while(temp != NULL) {
+vec.push_back((string)(ch));
+temp = fgets(ch, 32768, f);
+}
+fclose(f);
+dynamic_menu* menu = create_menu(vec, vector<string>());
+menu->run_extended("", "Use your arrow keys to review the credits, and enter to return to the main menu.", 1, true);
+}
+
+void instructions() {
+	FILE* f = fopen("manual.txt", "r");
+	if(!f) {
+		return;
+	}
+	char ch[32768];
+	vector<string> vec;
+	char* temp = fgets(ch, 32768, f);
+	while(temp != NULL) {
+		vec.push_back((string)(ch));
+		temp = fgets(ch, 32768, f);
+	}
+	fclose(f);
+	dynamic_menu* menu = create_menu(vec, vector<string>());
+	menu->run_extended("", "Use your arrow keys to review the credits, and enter to return to the main menu.", 1, true);
+}

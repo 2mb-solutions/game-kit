@@ -11,7 +11,7 @@ Michael: https://michaeltaboada.me
 #include <sound.h>
 #include <string>
 #include <misc.h>
-
+#include <menu_helper.h>
 #include "soundplayer.h"
 
 
@@ -134,5 +134,43 @@ return false;
 else {
 return play_sound_wait(&so);
 }
+}
+
+void learn_sounds() {
+vector<string>* vec = get_dir_children("sounds", 1);
+vector<string> real_items;
+for (int x = 0; x < vec->size(); x++) {
+if((*vec)[x].find("-music") == string::npos) {
+string temp = (*vec)[x];
+int pos = temp.find("-");
+while(pos != string::npos) {
+temp.replace(pos, 1, " ");
+pos = temp.find("-", pos+1);
+}
+temp.replace(temp.find("."), string::npos, "");
+real_items.push_back(temp);
+}
+else {
+vec->erase(vec->begin()+x);
+x--;
+}
+}
+real_items.push_back("back to main menu");
+dynamic_menu* menu = create_menu(real_items, vector<string>());
+int ran = menu->run_extended("", "Use your arrow keys to navigate the menu, and enter to play the sound. Pressing space while the sound is playing will stop it.", 1, true);
+keyboard kb;
+while(ran != -1 && ran != 0 && ran != real_items.size()) {
+sound s;
+s.load((string)("sounds/")+(*vec)[ran-1]);
+s.play();
+while(s.is_playing()) {
+if(kb.key_pressed(ALLEGRO_KEY_SPACE)) {
+break;
+}
+}
+s.stop();
+ran = menu->run_extended("", "", ran, false);
+}
+delete vec;
 }
 

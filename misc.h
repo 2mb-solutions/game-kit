@@ -13,5 +13,7 @@ int end_game(ALLEGRO_DISPLAY* DISP);
 string get_cpu_name();
 int log_open(string file);
 void credits(ALLEGRO_DISPLAY* disp, string gameName);
+void credits();
+void instructions();
 void log(string message);
 void log_close();

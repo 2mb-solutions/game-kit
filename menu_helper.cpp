@@ -8,10 +8,12 @@
 #include <dynamic_menu.h>
 #include <string>
 #include <vector>
+#include <misc.h>
+#include <soundplayer.h>
 using std::string;
 using std::vector;
 
-dynamic_menu* create_menu(vector<string> items, vector<string> sounditems, vector<int(*)(dynamic_menu*, int, void*)> vec, vector<void*> vec2) {
+dynamic_menu* create_menu(vector<string> items, vector<string> sounditems, vector<int(*)(dynamic_menu*, int, void*)> vec = vector<int(*)(dynamic_menu*, int, void*)>(), vector<void*> vec2 = vector<void*>()) {
 int soundnumber = sounditems.size();
 int numberofitems = items.size();
 dynamic_menu* menu = new dynamic_menu((numberofitems > soundnumber)?numberofitems:soundnumber);
@@ -71,3 +73,41 @@ al_destroy_fs_entry(f);
 return NULL;
 }
 }
+
+string generic_menu(vector<string> extra_items) {
+vector<string> real_items;
+real_items.push_back("Play game");
+real_items.push_back("View instructions");
+real_items.push_back("Learn game sounds.");
+for (int x = 0; x < extra_items.size(); x++) {
+real_items.push_back(extra_items[x]);
+}
+real_items.push_back("view credits");
+real_items.push_back("Exit game");
+dynamic_menu* menu = create_menu(real_items, vector<string>());
+int pos = -1;
+do {
+	pos = menu->run_extended("", "Use your arrow keys to navigate the menu, and enter to select.", 1, true);
+if(pos == 1) {
+return "play";
+}
+else if(pos == extra_items.size()+4) {
+credits();
+}
+else if(pos == 2) {
+instructions();
+}
+else if(pos == 3) {
+learn_sounds();
+}
+else if (pos == extra_items.size()+5) {
+return "exit";
+}
+else {
+return extra_items[pos-3];
+}
+}
+while (pos != -1 && pos != 0 & pos != extra_items.size()+5);
+return "invalid";
+}
+
