@@ -78,6 +78,7 @@ string generic_menu(vector<string> extra_items, string music = "") {
 sound menu_music;
 if(music != "") {
 menu_music.load(music);
+menu_music.set_loop(true);
 menu_music.play();
 }
 	vector<string> real_items;
