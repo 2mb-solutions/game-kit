@@ -74,8 +74,13 @@ return NULL;
 }
 }
 
-string generic_menu(vector<string> extra_items) {
-vector<string> real_items;
+string generic_menu(vector<string> extra_items, string music = "") {
+sound menu_music;
+if(music != "") {
+menu_music.load(music);
+menu_music.play();
+}
+	vector<string> real_items;
 real_items.push_back("Play game");
 real_items.push_back("View instructions");
 real_items.push_back("Learn game sounds.");
@@ -89,7 +94,9 @@ int pos = -1;
 do {
 	pos = menu->run_extended("", "Use your arrow keys to navigate the menu, and enter to select.", 1, true);
 if(pos == 1) {
-return "play";
+if(music != "")
+	fade(&menu_music);
+	return "play";
 }
 else if(pos == extra_items.size()+4) {
 credits();
@@ -98,16 +105,28 @@ else if(pos == 2) {
 instructions();
 }
 else if(pos == 3) {
-learn_sounds();
+if(music != "")
+	fade(&menu_music);
+	learn_sounds();
+if(music != "") {
+	menu_music.set_gain(0);
+menu_music.play();
+}
 }
 else if (pos == extra_items.size()+5) {
-return "exit";
+if(music != "")
+	fade(&menu_music);
+	return "exit";
 }
 else {
-return extra_items[pos-3];
+if(music != "")
+	fade(&menu_music);
+	return extra_items[pos-3];
 }
 }
 while (pos != -1 && pos != 0 & pos != extra_items.size()+5);
+if(music != "")
+menu_music.stop();
 return "invalid";
 }
 
