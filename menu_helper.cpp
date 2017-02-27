@@ -43,7 +43,7 @@ const char* fn = al_get_fs_entry_name(fs);
 string fsn = "";
 int x;
 for(x = strlen(fn)-1; x >= 0; x--) {
-if(fn[x] == '/') {
+if(fn[x] == '/' || fn[x] == '\') {
 break;
 }
 }
