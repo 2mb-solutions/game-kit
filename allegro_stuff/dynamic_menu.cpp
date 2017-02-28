@@ -189,6 +189,7 @@ int dynamic_menu::run_extended(string filename, string text, int pos, bool speak
 		last_x = true_x;
 			switch (ev.keyboard.keycode) {
 			case ALLEGRO_KEY_DOWN:
+			case ALLEGRO_KEY_K:
 				if(position == number_of_items) {
 					if(wrap) {
 						position = 0;
@@ -232,7 +233,8 @@ sr->speak_any_interrupt(textarray[position-1]);
 				al_flip_display();
 			break;
 			case ALLEGRO_KEY_UP:
-				if(position == 1 || position == 0) {
+			case ALLEGRO_KEY_I:
+			if(position == 1 || position == 0) {
 					if(wrap) {
 						position = number_of_items+1;
 					}
@@ -287,7 +289,6 @@ sr->speak_any_interrupt(textarray[position-1]);
 				}
 				s->stop();
 if(functions.size() >= position && functions[position-1]) {
-std::cout << functions[position-1] << std::endl;
 int ret = (*(functions[position-1]))(this, position, functionargs[position-1]);
 if(ret == 1) {
 				return position;
