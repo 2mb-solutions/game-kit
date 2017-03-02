@@ -376,7 +376,7 @@ bool sound_pool::resume_sound(int slot/**< [in] The slot to resume.**/) {
 	}
 	items[slot].paused=false;
 	if(max_distance>0 && items[slot].get_total_distance(last_listener_x, last_listener_y, last_listener_z)>max_distance) {
-		if(items[slot].s->get_active()) {
+		if(items[slot].s && items[slot].s->get_active()) {
 			delete items[slot].s;
 			items[slot].s = NULL;
 		}
@@ -584,10 +584,10 @@ bool sound_pool::verify_slot(int slot) {
 	if(slot>=numberofitems) {
 		return false;
 	}
-	if(items[slot].persistent==true) {
+	if(items[slot].s && items[slot].persistent==true) {
 		return true;
 	}
-if(items[slot].looping==true) {
+if(items[slot].s && items[slot].looping==true) {
 		return true;
 	}
 		if(items[slot].s!=NULL) {
