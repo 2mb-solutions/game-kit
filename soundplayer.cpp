@@ -139,6 +139,7 @@ return play_sound_wait(&so);
 void learn_sounds() {
 vector<string>* vec = get_dir_children("sounds", 1);
 vector<string> real_items;
+if (vec) {
 for (int x = 0; x < vec->size(); x++) {
 if((*vec)[x].find("-music") == string::npos) {
 string temp = (*vec)[x];
@@ -173,5 +174,9 @@ ran = menu->run_extended("", "", ran, false);
 }
 delete vec;
 delete menu;
+}
+else {
+log("Learn game sounds: the vector returned was NULL!\n");
+}
 }
 
