@@ -122,7 +122,7 @@ if(music != "")
 else {
 if(music != "")
 	fade(&menu_music);
-	return extra_items[pos-3];
+	return extra_items[pos-4];
 }
 }
 while (pos != -1 && pos != 0 & pos != extra_items.size()+5);
