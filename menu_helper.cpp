@@ -31,7 +31,7 @@ return menu;
 }
 
 vector<string>* get_dir_children(string dir, int dir_or_file) {
-ALLEGRO_FS_ENTRY *f = al_create_fs_entry((((string)(al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), '/')))+dir).c_str());
+ALLEGRO_FS_ENTRY *f = al_create_fs_entry((((string)(al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), ALLEGRO_NATIVE_PATH_SEP)))+dir).c_str());
 if(!f) {
 return NULL;
 }

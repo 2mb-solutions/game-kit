@@ -127,7 +127,7 @@ bool sound::load(string file/**< [in] The file to load.**/, string mixer/**< [in
 	}
 	if(samples.find(file)==samples.end()) {
 		ALLEGRO_SAMPLE* s=NULL;
-		s = al_load_sample(((string)(al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), '/'))+file).c_str());
+		s = al_load_sample(((string)(al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), ALLEGRO_NATIVE_PATH_SEP))+file).c_str());
 		if(!s) {
 			log("Could not load file "+file+"!\n");
 			return false;
