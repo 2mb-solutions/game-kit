@@ -179,7 +179,7 @@ void sound_pool_item::position_sound_3d(sound* s, double x, double y, double z, 
 		if(d != 0) 
 			phi = atan(zd/d);
 		else
-			phi = M_PI/2.0*abs(zd)/zd;
+			phi = M_PI/2.0*fabs(zd)/zd;
 	phi = phi*2.0;
 	double temppitch = -above_pitch*sin(phi);
 	pitch = pitch+temppitch;
