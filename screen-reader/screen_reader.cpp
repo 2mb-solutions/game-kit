@@ -532,8 +532,8 @@ int screen_reader::speak_vo_continue() {
 }
 
 bool screen_reader::speak_any(string text) {
-bool success = false;
 #ifdef _WIN32
+bool success = false;
 	if(jaws_is_available()) {
 		success = speak_jaws(text);
 	}
@@ -571,8 +571,8 @@ bool success = false;
 }
 
 bool screen_reader::speak_any_interrupt(string text) {
-bool success = false;
 #ifdef _WIN32
+bool success = false;
 	if(jaws_is_available()) {
 		success = speak_jaws_interrupt(text);
 	}

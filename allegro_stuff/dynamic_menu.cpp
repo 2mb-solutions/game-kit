@@ -8,7 +8,7 @@ dynamic_menu.cpp: a menu class supporting text, speech, and sounds!
 #include "dynamic_menu.h"
 #include <iostream>
 
-dynamic_menu::dynamic_menu(int numberofitems)
+dynamic_menu::dynamic_menu(unsigned int numberofitems)
 {
 select = move = NULL;
 	number_of_items=numberofitems;
@@ -39,19 +39,19 @@ if(font) {
 delete sr;
 }
 
-int dynamic_menu::add_item_sound(string filename, int pos, int (*funcptr)(dynamic_menu*, int, void*), void* arg) {
+int dynamic_menu::add_item_sound(string filename, unsigned int pos, int (*funcptr)(dynamic_menu*, int, void*), void* arg) {
 	if(pos > number_of_items || pos<1) {
 		return -1;
 	}
 	else {
 		soundarray[pos-1] = filename;
 functions[pos-1] = funcptr;
-functionargs[position-1] = arg;
+functionargs[pos-1] = arg;
 	}
 	return pos;
 }
 
-int dynamic_menu::add_item_text(string text, int pos, int (*funcptr)(dynamic_menu*, int, void*), void* arg) {
+int dynamic_menu::add_item_text(string text, unsigned int pos, int (*funcptr)(dynamic_menu*, int, void*), void* arg) {
 	if(pos > number_of_items || pos < 1) {
 		return -1;
 	}
@@ -63,11 +63,11 @@ functionargs[pos-1] = arg;
 	return pos;
 }
 
-int dynamic_menu::get_item_count() {
+unsigned int dynamic_menu::get_item_count() {
 	return number_of_items;
 }
 
-int dynamic_menu::get_position() {
+unsigned int dynamic_menu::get_position() {
 	return position;
 }
 
@@ -115,18 +115,18 @@ int dynamic_menu::run(string filename, string text) {
 	return run_extended(filename, text, 0, false);
 }
 
-int dynamic_menu::run_extended(string filename, string text, int pos, bool speak) {
+int dynamic_menu::run_extended(string filename, string text, unsigned int pos, bool speak) {
 	if(pos<= 0 || pos > number_of_items) {
 		pos = 1;
 	}
 	position = pos;
 	ALLEGRO_COLOR selected = al_map_rgb(255, 255, 0);
 	ALLEGRO_COLOR regular = al_map_rgb(128, 128, 128);
-	int fontsize;
+	int fontsize = 0;
 	if(font) {
 		fontsize = font_size;
 	}
-	int center;
+	int center = 0;
 	int last_x = 0;
 	int true_x = 0;
 	if(display) {
@@ -160,7 +160,7 @@ int dynamic_menu::run_extended(string filename, string text, int pos, bool speak
 		}
 	}
 	last_x = true_x;
-	for(int i = 0; i < number_of_items; i++) {
+	for(unsigned int i = 0; i < number_of_items; i++) {
 		if(textarray[i].compare("") == 0) {
 			continue;
 		}
@@ -211,7 +211,7 @@ int dynamic_menu::run_extended(string filename, string text, int pos, bool speak
 if(textarray[position-1].compare("") != 0) {
 sr->speak_any_interrupt(textarray[position-1]);
 }
-				for (int i = 0; i < number_of_items; i++) {
+				for (unsigned int i = 0; i < number_of_items; i++) {
 					if(textarray[i].compare("") == 0) {
 						continue;
 					}	
@@ -255,7 +255,7 @@ sr->speak_any_interrupt(textarray[position-1]);
 if(textarray[position-1].compare("") != 0) {
 sr->speak_any_interrupt(textarray[position-1]);
 }
-				for (int i = 0; i < number_of_items; i++) {
+				for (unsigned int i = 0; i < number_of_items; i++) {
 					if(textarray[i].compare("") == 0) {
 						continue;
 					}

@@ -140,10 +140,10 @@ void learn_sounds() {
 vector<string>* vec = get_dir_children("sounds", 1);
 vector<string> real_items;
 if (vec) {
-for (int x = 0; x < vec->size(); x++) {
+for (unsigned int x = 0; x < vec->size(); x++) {
 if((*vec)[x].find("-music") == string::npos) {
 string temp = (*vec)[x];
-int pos = temp.find("-");
+unsigned int pos = temp.find("-");
 while(pos != string::npos) {
 temp.replace(pos, 1, " ");
 pos = temp.find("-", pos+1);
@@ -160,7 +160,7 @@ real_items.push_back("back to main menu");
 dynamic_menu* menu = create_menu(real_items, vector<string>());
 int ran = menu->run_extended("", "Use your arrow keys to navigate the menu, and enter to play the sound. Pressing space while the sound is playing will stop it.", 1, true);
 keyboard kb;
-while(ran != -1 && ran != 0 && ran != real_items.size()) {
+while(ran != -1 && ran != 0 && ran != (int)(real_items.size())) {
 sound s;
 s.load((string)("sounds/")+(*vec)[ran-1]);
 s.play();

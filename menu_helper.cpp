@@ -14,15 +14,15 @@ using std::string;
 using std::vector;
 
 dynamic_menu* create_menu(vector<string> items, vector<string> sounditems, vector<int(*)(dynamic_menu*, int, void*)> vec = vector<int(*)(dynamic_menu*, int, void*)>(), vector<void*> vec2 = vector<void*>()) {
-int soundnumber = sounditems.size();
-int numberofitems = items.size();
+unsigned int soundnumber = sounditems.size();
+unsigned int numberofitems = items.size();
 dynamic_menu* menu = new dynamic_menu((numberofitems > soundnumber)?numberofitems:soundnumber);
-for(int x = 1; x <= numberofitems; x++) {
+for(unsigned int x = 1; x <= numberofitems; x++) {
 if(items[x-1] != "") {
 menu->add_item_text(items[x-1], x, ((vec.size() >= x)?vec[x-1]:NULL), ((vec2.size() >= x)?vec2[x-1]:NULL));
 }
 }
-for(int y = 1; y <= soundnumber; y++) {
+for(unsigned int y = 1; y <= soundnumber; y++) {
 if(sounditems[y-1] != "") {
 menu->add_item_sound(sounditems[y-1], y, ((vec.size() >= y)?vec[y-1]:NULL), ((vec2.size() >= y)?vec2[y-1]:NULL));
 }
@@ -42,12 +42,12 @@ while(fs) {
 const char* fn = al_get_fs_entry_name(fs);
 string fsn = "";
 int x;
-for(x = strlen(fn)-1; x >= 0; x--) {
+for(x = (int)(strlen(fn)-1); x >= 0; x--) {
 if(fn[x] == '/' || fn[x] == '\\') {
 break;
 }
 }
-for(int y = x+1; y < strlen(fn); y++) {
+for(unsigned int y = x+1; y < strlen(fn); y++) {
 fsn += fn[y];
 }
 if(dir_or_file == 0) {
@@ -85,7 +85,7 @@ menu_music.play();
 real_items.push_back("Play game");
 real_items.push_back("View instructions");
 real_items.push_back("Learn game sounds.");
-for (int x = 0; x < extra_items.size(); x++) {
+for (unsigned int x = 0; x < extra_items.size(); x++) {
 real_items.push_back(extra_items[x]);
 }
 real_items.push_back("view credits");
@@ -96,10 +96,10 @@ do {
 	pos = menu->run_extended("", "Use your arrow keys to navigate the menu, and enter to select.", 1, true);
 if(pos == 1) {
 if(music != "")
-	fade(&menu_music);
-	return "play";
+fade(&menu_music);
+return "play";
 }
-else if(pos == extra_items.size()+4) {
+else if(pos == (int)(extra_items.size()+4)) {
 credits();
 }
 else if(pos == 2) {
@@ -107,25 +107,25 @@ instructions();
 }
 else if(pos == 3) {
 if(music != "")
-	fade(&menu_music);
-	learn_sounds();
+fade(&menu_music);
+learn_sounds();
 if(music != "") {
-	menu_music.set_gain(0);
+menu_music.set_gain(0);
 menu_music.play();
 }
 }
-else if (pos == extra_items.size()+5) {
+else if (pos == (int)(extra_items.size()+5)) {
 if(music != "")
-	fade(&menu_music);
-	return "exit";
+fade(&menu_music);
+return "exit";
 }
 else {
 if(music != "")
-	fade(&menu_music);
-	return extra_items[pos-4];
+fade(&menu_music);
+return extra_items[pos-4];
 }
 }
-while (pos != -1 && pos != 0 & pos != extra_items.size()+5);
+while (pos != -1 && pos != 0 && pos != (int)(extra_items.size()+5));
 if(music != "")
 menu_music.stop();
 return "invalid";
