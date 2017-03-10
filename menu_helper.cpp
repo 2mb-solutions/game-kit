@@ -119,6 +119,14 @@ if(music != "")
 fade(&menu_music);
 return "exit";
 }
+else if(pos == 0) {
+fade(&menu_music);
+return "escape";
+}
+else if(pos == -1) {
+fade(&menu_music);
+return "invalid";
+}
 else {
 if(music != "")
 fade(&menu_music);
