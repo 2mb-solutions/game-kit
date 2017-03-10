@@ -191,12 +191,12 @@ int dynamic_menu::run_extended(string filename, string text, unsigned int pos, b
 			case ALLEGRO_KEY_DOWN:
 			case ALLEGRO_KEY_K:
 				if(position == number_of_items) {
-					if(wrap) {
+//					if(wrap) {
 						position = 0;
-					}
-					else {
-						continue;
-					}
+//					}
+//					else {
+//						continue;
+//					}
 				}
 				position++;
 				if(move) {
@@ -235,12 +235,12 @@ sr->speak_any_interrupt(textarray[position-1]);
 			case ALLEGRO_KEY_UP:
 			case ALLEGRO_KEY_I:
 			if(position == 1 || position == 0) {
-					if(wrap) {
+//					if(wrap) {
 						position = number_of_items+1;
-					}
-					else {
-						continue;
-					}
+//					}
+//					else {
+//						continue;
+//					}
 				}
 				position--;
 				if(move) {
@@ -277,10 +277,91 @@ sr->speak_any_interrupt(textarray[position-1]);
 				al_flip_display();
 			break;
 			case ALLEGRO_KEY_ESCAPE:
-				if(allow_escape) {
+			case ALLEGRO_KEY_Q:
+//			if(allow_escape) {
 					s->stop();
 					return 0;
+//				}
+			break;
+			case ALLEGRO_KEY_END:	
+			if(position != number_of_items) {
+						position = number_of_items;
+			}
+						else {
+						continue;
+					}
+				if(move) {
+					move->stop();
+					move->play();
 				}
+				if(soundarray[position-1].compare("") != 0) {
+					s->stop();
+					s->load(soundarray[position-1]);
+					s->play();
+				}
+if(textarray[position-1].compare("") != 0) {
+sr->speak_any_interrupt(textarray[position-1]);
+}
+				for (unsigned int i = 0; i < number_of_items; i++) {
+					if(textarray[i].compare("") == 0) {
+						continue;
+					}
+					if(!display) {
+						continue;
+					}
+					if(!font) {
+						continue;
+					}
+					if(i == position-1) {
+						last_x = last_x+fontsize;
+						al_draw_text(font, selected, center, last_x, ALLEGRO_ALIGN_CENTRE, textarray[i].c_str());
+					}
+					else {
+						last_x = last_x+fontsize;
+						al_draw_text(font, regular, center, last_x, ALLEGRO_ALIGN_CENTRE, textarray[i].c_str());
+					}
+				}
+				al_flip_display();
+			break;
+			case ALLEGRO_KEY_HOME:	
+			if(position != 1) {
+						position = 1;
+			}
+						else {
+						continue;
+					}
+				if(move) {
+					move->stop();
+					move->play();
+				}
+				if(soundarray[position-1].compare("") != 0) {
+					s->stop();
+					s->load(soundarray[position-1]);
+					s->play();
+				}
+if(textarray[position-1].compare("") != 0) {
+sr->speak_any_interrupt(textarray[position-1]);
+}
+				for (unsigned int i = 0; i < number_of_items; i++) {
+					if(textarray[i].compare("") == 0) {
+						continue;
+					}
+					if(!display) {
+						continue;
+					}
+					if(!font) {
+						continue;
+					}
+					if(i == position-1) {
+						last_x = last_x+fontsize;
+						al_draw_text(font, selected, center, last_x, ALLEGRO_ALIGN_CENTRE, textarray[i].c_str());
+					}
+					else {
+						last_x = last_x+fontsize;
+						al_draw_text(font, regular, center, last_x, ALLEGRO_ALIGN_CENTRE, textarray[i].c_str());
+					}
+				}
+				al_flip_display();
 			break;
 			case ALLEGRO_KEY_ENTER:
 				if(select) {
