@@ -143,7 +143,7 @@ if (vec) {
 for (unsigned int x = 0; x < vec->size(); x++) {
 if((*vec)[x].find("-music") == string::npos) {
 string temp = (*vec)[x];
-unsigned int pos = temp.find("-");
+string::size_type pos = temp.find("-");
 while(pos != string::npos) {
 temp.replace(pos, 1, " ");
 pos = temp.find("-", pos+1);
