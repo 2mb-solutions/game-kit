@@ -140,7 +140,9 @@ fi = NULL;
 }
 
 void credits() {
-FILE* f = fopen("credits.txt", "r");
+string path = al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), ALLEGRO_NATIVE_PATH_SEP);
+path = path+(string)("credits.txt");
+FILE* f = fopen(path.c_str(), "r");
 if(!f) {
 return;
 }
@@ -158,7 +160,9 @@ delete menu;
 }
 
 void instructions() {
-	FILE* f = fopen("manual.txt", "r");
+string path = al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), ALLEGRO_NATIVE_PATH_SEP);
+path = path+(string)("manual.txt");
+	FILE* f = fopen(path.c_str(), "r");
 	if(!f) {
 		return;
 	}

@@ -259,8 +259,11 @@ bool screen_reader::vo_is_available() {
 bool screen_reader::speak_vo(string text) {
 #ifdef __MACH__
 	if(vo_is_available()) {
-		const char* text2 = text.c_str();
+		char* text2 = new char[strlen(text.c_str())+1];
+if (text2) {
+strcpy(text2, text.c_str());
 		OSErr val = SpeakBuffer(*chan, text2, strlen(text2)+1, kNoSpeechInterrupt);
+delete[] text2;
 		if(val == 0) {
 			return true;
 		}
@@ -268,6 +271,11 @@ bool screen_reader::speak_vo(string text) {
 			speechqueue.push(text);
 			return false;
 		}
+}
+
+else {
+return false;
+}
 	}
 	else {
 		return false;
