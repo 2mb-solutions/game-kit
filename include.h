@@ -1,5 +1,4 @@
 #include <allegro5/allegro.h>
-#include "demo.h"
 #include "dynamic_menu.h"
 #include <iostream>
 #include <keyboard.h>
