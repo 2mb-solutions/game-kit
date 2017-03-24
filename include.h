@@ -1,0 +1,15 @@
+#include <allegro5/allegro.h>
+#include "demo.h"
+#include "dynamic_menu.h"
+#include <iostream>
+#include <keyboard.h>
+#include <menu_helper.h>
+#include <misc.h>
+#include <sound.h>
+#include <soundplayer.h>
+#include <sound_pool.h>
+#include <sstream>
+#include <stdlib.h>
+#include <string>
+#include <time.h>
+#include <vector>
