@@ -70,7 +70,9 @@ classptr = NULL;
 #elif defined(__linux__)
 	if(sd) {
 spd_close(sd);
+sd = NULL;
 	}
+sd_initialized = false;
 #elif defined(__MACH__)
 	if(chan) {
 		DisposeSpeechChannel(*chan);
