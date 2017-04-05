@@ -93,12 +93,14 @@ real_items.push_back(extra_items[x]);
 real_items.push_back("view credits");
 real_items.push_back("Exit game");
 dynamic_menu* menu = create_menu(real_items, vector<string>());
+if (menu) {
 int pos = -1;
 do {
 	pos = menu->run_extended("", "Use your arrow keys to navigate the menu, and enter to select.", 1, true);
 if(pos == 1) {
 if(music != "")
 fade(&menu_music);
+delete menu;
 return "play";
 }
 else if(pos == (int)(real_items.size()-1)) {
@@ -119,23 +121,28 @@ menu_music.play();
 else if (pos == (int)(real_items.size())) {
 if(music != "")
 fade(&menu_music);
+delete menu;
 return "exit";
 }
 else if(pos == 0) {
 fade(&menu_music);
+delete menu;
 return "escape";
 }
 else if(pos == -1) {
 fade(&menu_music);
+delete menu;
 return "invalid";
 }
 else {
 if(music != "")
 fade(&menu_music);
-return extra_items[pos-(real_items.size()-extra_items.size())-1];
+delete menu;
+return extra_items[pos-(real_items.size()-3)];
 }
 }
 while (pos != -1 && pos != 0 && pos != (int)(real_items.size()));
+}
 if(music != "")
 menu_music.stop();
 return "invalid";
