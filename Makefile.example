@@ -17,7 +17,7 @@ LDFLAGS	= -lallegro_audio -lallegro_acodec -lallegro -lallegro_font -lspeechd
 
 #formatting specific flags
 FORMATTER = astyle
-FORMAT_FLAGS = --style=gnu
+FORMAT_FLAGS = --style=gnu -Q
 
 	#source files to compile:
 # game-kit files, only update if game-kit has been updated.
