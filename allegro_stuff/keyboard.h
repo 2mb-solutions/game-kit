@@ -13,17 +13,17 @@ static int defaultq[] = {ALLEGRO_KEY_ESCAPE};
 class keyboard
 {
 public:
-	keyboard(void);
-	~keyboard(void);
-	bool poll(ALLEGRO_EVENT& event);
-	bool key_down(int key);
-	bool key_pressed(int key);
-string get_chars(int* finish = defaultf, int flength = 2, int* quit = defaultq, int qlength = 1);
+    keyboard(void);
+    ~keyboard(void);
+    bool poll(ALLEGRO_EVENT& event);
+    bool key_down(int key);
+    bool key_pressed(int key);
+    string get_chars(int* finish = defaultf, int flength = 2, int* quit = defaultq, int qlength = 1);
 private:
-	bool* keys_down;
-	bool* keys_pressed;
-	ALLEGRO_EVENT_QUEUE* queue;
-bool getting_chars;
-string chars;
+    bool* keys_down;
+    bool* keys_pressed;
+    ALLEGRO_EVENT_QUEUE* queue;
+    bool getting_chars;
+    string chars;
 };
 
