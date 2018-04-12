@@ -75,6 +75,7 @@ return NULL;
 }
 
 string generic_menu(vector<string> extra_items, string music = "", bool learn_sounds_yes = true) {
+bool instructions,credits;
 sound menu_music;
 if(music != "") {
 menu_music.load(music);
@@ -83,14 +84,34 @@ menu_music.play();
 }
 	vector<string> real_items;
 real_items.push_back("Play game");
+string path = al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), ALLEGRO_NATIVE_PATH_SEP);
+path = path+(string)("manual.txt");
+        FILE* f = fopen(path.c_str(), "r");
+        if(f) {
 real_items.push_back("View instructions");
+instructions = true;
+fclose(f);
+        }
+else {
+instructions = false;
+}
 if (learn_sounds_yes) {
 real_items.push_back("Learn game sounds.");
 }
 for (unsigned int x = 0; x < extra_items.size(); x++) {
 real_items.push_back(extra_items[x]);
 }
+path = al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), ALLEGRO_NATIVE_PATH_SEP);
+path = path+(string)("credits.txt");
+        FILE* f = fopen(path.c_str(), "r");
+        if(f) {
 real_items.push_back("view credits");
+credits = true;
+fclose(f);
+        }
+else {
+credits = false;
+}
 real_items.push_back("Exit game");
 dynamic_menu* menu = create_menu(real_items, vector<string>());
 if (menu) {
@@ -103,13 +124,13 @@ fade(&menu_music);
 delete menu;
 return "play";
 }
-else if(pos == (int)(real_items.size()-1)) {
+else if(pos == (int)(real_items.size()-1) && credits == true) {
 credits();
 }
-else if(pos == 2) {
+else if(pos == 2 && instructions == true) {
 instructions();
 }
-else if(pos == 3 && learn_sounds_yes) {
+else if (learn_sounds_yes && ((pos == 3 && instructions == true) || (pos == 2 && instructions == false))) {
 if(music != "")
 fade(&menu_music);
 learn_sounds();
@@ -138,7 +159,14 @@ else {
 if(music != "")
 fade(&menu_music);
 delete menu;
+if (instructions == true && learn_sounds_yes == true) {
 return extra_items[pos-(real_items.size()-3)];
+}
+else if(instructions == true || learn_sounds_yes == true) {
+return extra_items[pos-(real_items.size()-2)];
+}
+else {
+return extra_items[pos-(real_items.size()-1)];
 }
 }
 while (pos != -1 && pos != 0 && pos != (int)(real_items.size()));
