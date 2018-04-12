@@ -75,7 +75,7 @@ return NULL;
 }
 
 string generic_menu(vector<string> extra_items, string music = "", bool learn_sounds_yes = true) {
-bool instructions,credits;
+bool do_instructions,do_credits;
 sound menu_music;
 if(music != "") {
 menu_music.load(music);
@@ -89,11 +89,11 @@ path = path+(string)("manual.txt");
         FILE* f = fopen(path.c_str(), "r");
         if(f) {
 real_items.push_back("View instructions");
-instructions = true;
+do_instructions = true;
 fclose(f);
         }
 else {
-instructions = false;
+do_instructions = false;
 }
 if (learn_sounds_yes) {
 real_items.push_back("Learn game sounds.");
@@ -103,14 +103,14 @@ real_items.push_back(extra_items[x]);
 }
 path = al_path_cstr(al_get_standard_path(ALLEGRO_RESOURCES_PATH), ALLEGRO_NATIVE_PATH_SEP);
 path = path+(string)("credits.txt");
-        FILE* f = fopen(path.c_str(), "r");
+f = fopen(path.c_str(), "r");
         if(f) {
 real_items.push_back("view credits");
-credits = true;
+do_credits = true;
 fclose(f);
         }
 else {
-credits = false;
+do_credits = false;
 }
 real_items.push_back("Exit game");
 dynamic_menu* menu = create_menu(real_items, vector<string>());
@@ -124,13 +124,13 @@ fade(&menu_music);
 delete menu;
 return "play";
 }
-else if(pos == (int)(real_items.size()-1) && credits == true) {
+else if(pos == (int)(real_items.size()-1) && do_credits == true) {
 credits();
 }
-else if(pos == 2 && instructions == true) {
+else if(pos == 2 && do_instructions == true) {
 instructions();
 }
-else if (learn_sounds_yes && ((pos == 3 && instructions == true) || (pos == 2 && instructions == false))) {
+else if (learn_sounds_yes && ((pos == 3 && do_instructions == true) || (pos == 2 && do_instructions == false))) {
 if(music != "")
 fade(&menu_music);
 learn_sounds();
@@ -159,14 +159,15 @@ else {
 if(music != "")
 fade(&menu_music);
 delete menu;
-if (instructions == true && learn_sounds_yes == true) {
+if (do_instructions == true && learn_sounds_yes == true) {
 return extra_items[pos-(real_items.size()-3)];
 }
-else if(instructions == true || learn_sounds_yes == true) {
+else if(do_instructions == true || learn_sounds_yes == true) {
 return extra_items[pos-(real_items.size()-2)];
 }
 else {
 return extra_items[pos-(real_items.size()-1)];
+}
 }
 }
 while (pos != -1 && pos != 0 && pos != (int)(real_items.size()));
