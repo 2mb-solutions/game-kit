@@ -236,7 +236,6 @@ else
 	@mkdir $(OUTPUT).app
 	@mkdir -p $(OUTPUT).app/Contents/MacOS
 	@cp Info.plist $(OUTPUT).app/Contents
-	@cp -r game-kit/allegro_stuff/mac-lib64 $(OUTPUT).app/Contents/MacOS/lib
 	@cp $(OUTPUT)_launcher $(OUTPUT).app/Contents/MacOS
 	@mkdir $(OUTPUT).app/Contents/Resources
 	@for x in "$(RESOURCES)";do \
@@ -330,7 +329,6 @@ else
 	@mkdir $(OUTPUT)-demo.app
 	@mkdir -p $(OUTPUT)-demo.app/Contents/MacOS
 	@cp Info.plist $(OUTPUT)-demo.app/Contents
-	@cp -r game-kit/allegro_stuff/mac-lib64 $(OUTPUT)-demo.app/Contents/MacOS/lib
 	@cp $(OUTPUT)_launcher $(OUTPUT)-demo.app/Contents/MacOS
 	@mkdir $(OUTPUT)-demo.app/Contents/Resources
 	@for x in "$(RESOURCES)";do \
@@ -422,7 +420,6 @@ else
 	@mkdir $(OUTPUT).app
 	@mkdir -p $(OUTPUT).app/Contents/MacOS
 	@cp Info.plist $(OUTPUT).app/Contents
-	@cp -r game-kit/allegro_stuff/mac-lib64 $(OUTPUT).app/Contents/MacOS/lib
 	@cp $(OUTPUT)_launcher $(OUTPUT).app/Contents/MacOS
 	@mkdir $(OUTPUT).app/Contents/Resources
 	@for x in "$(RESOURCES)";do \
