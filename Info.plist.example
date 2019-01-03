@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBunleDisplayName</key>
+  <string>MineRacer</string>
+  <key>CFBundleExecutable</key>
+  <string>mineracer_launcher</string>
+  <key>CFBundleIdentifier</key>
+  <string>solutions.2mb.mineracer</string>
+  <key>CFBundleName</key>
+  <string>mineracer</string>
+<!--
+  <key>CFBundleIconFile</key>
+  <string>foo.icns</string>
+-->
+<key>CFBundleVersion</key>
+<string>1.0</string>
+  <key>CFBundleShortVersionString</key>
+  <string>1.0</string>
+<key>CFBundleSignature</key>
+<string>mrcr</string>
+  <key>CFBundleInfoDictionaryVersion</key>
+  <string>6.0</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+  <key>IFMajorVersion</key>
+  <integer>0</integer>
+  <key>IFMinorVersion</key>
+  <integer>1</integer>
+</dict>
+</plist>
