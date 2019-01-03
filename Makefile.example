@@ -445,76 +445,9 @@ packageclean:
 fullclean: clean packageclean
 
 fix_names:
-	@libPath=/usr/local/lib;\
-	allegroVersion="$$(ls -1 $${libPath}/liballegro.*.*.*.dylib | head -n 1)";\
-	allegroVersion="$$(echo "$${allegroVersion#.dylib}" |sed "s/liballegro//g")";\
-	opusVersion="$$(ls -1 $${libPath}/libopus.*.dylib | head -n 1)";\
-	opusVersion="$$(echo "$${opusVersion#.dylib}" |sed "s/libopus//g")";\
-	opusfileVersion="$$(ls -1 $${libPath}/libopusfile.*.dylib | head -n 1)";\
-	opusfileVersion="$$(echo "$${opusfileVersion#.dylib}" |sed "s/libopusfile//g")";\
-	vorbisVersion="$$(ls -1 $${libPath}/libvorbis.*.dylib | head -n 1)";\
-	vorbisVersion="$$(echo "$${vorbisVersion#.dylib}" |sed "s/libvorbis//g")";\
-	vorbisfileVersion="$$(ls -1 $${libPath}/libvorbisfile.*.dylib | head -n 1)";\
-	vorbisfileVersion="$$(echo "$${vorbisfileVersion#.dylib}" |sed "s/libvorbisfile//g")";\
-	oggVersion="$$(ls -1 $${libPath}/libogg.*.dylib | head -n 1)";\
-	oggVersion="$$(echo "$${oggVersion#.dylib}" |sed "s/libogg.//g")";\
-	soFiles=(\
-	"liballegro.$${allegroVersion}.dylib" \
-	"liballegro_audio.$${allegroVersion}.dylib" \
-	"liballegro_acodec.$${allegroVersion}.dylib" \
-	"liballegro_font.$${allegroVersion}.dylib" \
-	"liballegro_main.$${allegroVersion}.dylib" \
-	"libopus.$${opusVersion}.dylib" \
-	"libopusfile.$${opusfileVersion}.dylib" \
-	"libvorbis.$${vorbisVersion}.dylib" \
-	"libvorbisfile.$${vorbisfileVersion}.dylib" \
-	"libogg.$${oggVersion}.dylib"\
-	);\
 	mkdir $(OUTPUT).app/Contents/MacOS/lib;\
 	macpack $(OUTPUT).app/Contents/MacOS/$(OUTPUT) -d $(OUTPUT).app/Contents/MacOS/lib
-#	dylibbundler -cd -p @executable_path/lib -x $(OUTPUT).app/Contents/MacOS/$(OUTPUT) -d $(OUTPUT).app/Contents/MacOS/lib -b
-#	@install_name_tool -change /usr/local/lib/libFLAC.8.dylib @loader_path/lib/libFLAC.dylib $(OUTPUT).app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/libogg/lib/libogg.0.dylib @loader_path/lib/libogg.dylib $(OUTPUT).app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/opus/lib/libopus.0.dylib @loader_path/lib/libopus.dylib $(OUTPUT).app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/opusfile/lib/libopusfile.0.dylib @loader_path/lib/libopusfile.dylib $(OUTPUT).app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/libvorbis/lib/libvorbis.0.dylib @loader_path/lib/libvorbis.dylib $(OUTPUT).app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/libvorbis/lib/libvorbisfile.3.dylib @loader_path/lib/libvorbisfile.dylib $(OUTPUT).app/Contents/MacOS/$(OUTPUT)
-#	@for x in {allegro_main,allegro_font,allegro_audio,allegro_acodec,allegro};do install_name_tool -change /usr/local/opt/allegro/lib/lib$x.5.2.dylib @loader_path/lib/lib$x.dylib $(OUTPUT).app/Contents/MacOS/$(OUTPUT);done
 
 fix_names_demo:
-	@libPath=/usr/local/lib;\
-	allegroVersion="$$(ls -1 $${libPath}/liballegro.*.*.*.dylib | head -n 1)";\
-	allegroVersion="$$(echo "$${allegroVersion#.dylib}" |sed "s/liballegro//g")";\
-	opusVersion="$$(ls -1 $${libPath}/libopus.*.dylib | head -n 1)";\
-	opusVersion="$$(echo "$${opusVersion#.dylib}" |sed "s/libopus//g")";\
-	opusfileVersion="$$(ls -1 $${libPath}/libopusfile.*.dylib | head -n 1)";\
-	opusfileVersion="$$(echo "$${opusfileVersion#.dylib}" |sed "s/libopusfile//g")";\
-	vorbisVersion="$$(ls -1 $${libPath}/libvorbis.*.dylib | head -n 1)";\
-	vorbisVersion="$$(echo "$${vorbisVersion#.dylib}" |sed "s/libvorbis//g")";\
-	vorbisfileVersion="$$(ls -1 $${libPath}/libvorbisfile.*.dylib | head -n 1)";\
-	vorbisfileVersion="$$(echo "$${vorbisfileVersion#.dylib}" |sed "s/libvorbisfile//g")";\
-	oggVersion="$$(ls -1 $${libPath}/libogg.*.dylib | head -n 1)";\
-	oggVersion="$$(echo "$${oggVersion#.dylib}" |sed "s/libogg.//g")";\
-	soFiles=(\
-	"liballegro.$${allegroVersion}.dylib" \
-	"liballegro_audio.$${allegroVersion}.dylib" \
-	"liballegro_acodec.$${allegroVersion}.dylib" \
-	"liballegro_font.$${allegroVersion}.dylib" \
-	"liballegro_main.$${allegroVersion}.dylib" \
-	"libopus.$${opusVersion}.dylib" \
-	"libopusfile.$${opusfileVersion}.dylib" \
-	"libvorbis.$${vorbisVersion}.dylib" \
-	"libvorbisfile.$${vorbisfileVersion}.dylib" \
-	"libogg.$${oggVersion}.dylib"\
-	);\
 	mkdir $(OUTPUT)-demo.app/Contents/MacOS/lib;\
 	macpack $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT) -d $(OUTPUT)-demo.app/Contents/MacOS/lib
-#	dylibbundler -cd -p @executable_path/lib -x $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT) -d $(OUTPUT)-demo.app/Contents/MacOS/lib -b
-#	@install_name_tool -change /usr/local/lib/libFLAC.8.dylib @loader_path/lib/libFLAC.dylib $(OUTPUT).app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/lib/libFLAC.8.dylib @loader_path/lib/libFLAC.dylib $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/libogg/lib/libogg.0.dylib @loader_path/lib/libogg.dylib $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/opus/lib/libopus.0.dylib @loader_path/lib/libopus.dylib $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/opusfile/lib/libopusfile.0.dylib @loader_path/lib/libopusfile.dylib $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/libvorbis/lib/libvorbis.0.dylib @loader_path/lib/libvorbis.dylib $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT)
-#	@install_name_tool -change /usr/local/opt/libvorbis/lib/libvorbisfile.3.dylib @loader_path/lib/libvorbisfile.dylib $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT)
-#	@for x in {allegro_main,allegro_font,allegro_audio,allegro_acodec,allegro};do install_name_tool -change /usr/local/opt/allegro/lib/lib$x.5.2.dylib @loader_path/lib/lib$x.dylib $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT);done
