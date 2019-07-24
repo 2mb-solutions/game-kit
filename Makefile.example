@@ -232,7 +232,7 @@ else
 	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)
 endif
 else
-	@if [ -d "$(OUTPUT).app" ];the rm -rf $(OUTPUT).app;fi
+	@if [ -d "$(OUTPUT).app" ];then rm -rf $(OUTPUT).app;fi
 	@mkdir $(OUTPUT).app
 	@mkdir -p $(OUTPUT).app/Contents/MacOS
 	@cp Info.plist $(OUTPUT).app/Contents
