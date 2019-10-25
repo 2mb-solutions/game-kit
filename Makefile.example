@@ -58,6 +58,9 @@ RESOURCES=sounds credits.txt manual.txt
 ###IF YOU HAVE CHANGES, MAKE THEM ABOVE TO THE FLAGS.
 ###
 
+# demo variable
+export DEMO ?=
+
 # os variables for os specific compilation and packaging.
 ifeq ($(OS),Windows_NT)
 CXX=cl
@@ -129,6 +132,12 @@ demo.h:
 	@if [ ! -f demo.h ];then $(ECHO) "Demo.h does not exist, setting to default full program contents."; $(ECHO) "$(FULLDEFINE)" > demo.h;fi
 endif
 
+fullclean: clean packageclean
+
+packageclean:
+	@$(ECHO) "Cleaning up packages."
+	@rm -rf packages
+
 clean:
 	@$(ECHO) "Cleaning objects and other binary files"
 	@$(RM) $(O_FILES)
@@ -158,8 +167,18 @@ endif
 
 ifeq ($(HASDEMO),true)
 package: package_demo package_full
+package_demo: DEMO = -demo
+package_demo: demo
+	@$(MAKE) do_package
+package_full: full
+	@$(MAKE) do_package
 else
-package:
+package: package_full
+package_full:
+	@$(MAKE) do_package
+endif
+
+do_package:
 	@$(ECHO) "Building release package"
 ifneq ($(OSVAR),mac)
 	@if [ -d distrib ]; then \
@@ -217,234 +236,39 @@ endif
 	@cp $(OUTPUT) distrib
 	@if [ ! -d packages ];then mkdir packages;fi
 ifneq ($(OSVAR),win32)
-	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-') ];then rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-');fi
-	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')
-	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-').tar.xz
+	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO) ];then rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO);fi
+	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO)
+	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO).tar.xz
 	@cd packages;\
-	tar -cJRf $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-').tar.xz $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')
-	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')
+	tar -cJRf $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO).tar.xz $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO)
+	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO)
 else
-	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR) ];then $(RM) -r packages/$(subst .exe,,$(OUTPUT))-$(OSVAR);fi
-	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)
-	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR).zip
+	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO) ];then $(RM) -r packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO);fi
+	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO)
+	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO).zip
 	@cd packages;\
-	7z a -r $(subst .exe,,$(OUTPUT))-$(OSVAR).zip $(subst .exe,,$(OUTPUT))-$(OSVAR)
-	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)
+	7z a -r $(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO).zip $(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO)
+	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO)
 endif
 else
-	@if [ -d "$(OUTPUT).app" ];then rm -rf $(OUTPUT).app;fi
-	@mkdir $(OUTPUT).app
-	@mkdir -p $(OUTPUT).app/Contents/MacOS
-	@cp Info.plist $(OUTPUT).app/Contents
-	@cp $(OUTPUT)_launcher $(OUTPUT).app/Contents/MacOS
-	@mkdir $(OUTPUT).app/Contents/Resources
+	@if [ -d "$(OUTPUT)$(DEMO).app" ];then rm -rf $(OUTPUT)$(DEMO).app;fi
+	@mkdir $(OUTPUT)$(DEMO).app
+	@mkdir -p $(OUTPUT)$(DEMO).app/Contents/MacOS
+	@cp Info.plist $(OUTPUT)$(DEMO).app/Contents
+	@cp $(OUTPUT)_launcher $(OUTPUT)$(DEMO).app/Contents/MacOS
+	@mkdir $(OUTPUT)$(DEMO).app/Contents/Resources
 	@for x in "$(RESOURCES)";do \
-	cp -R $$x $(OUTPUT).app/Contents/Resources;\
+	cp -R $$x $(OUTPUT)$(DEMO).app/Contents/Resources;\
 	done
 	@$(MAKE)
-	@cp $(OUTPUT) $(OUTPUT).app/Contents/MacOS
+	@cp $(OUTPUT) $(OUTPUT)$(DEMO).app/Contents/MacOS
 	@$(MAKE) fix_names
 	@if [ ! -d packages ];then mkdir packages;fi
-	@if [ -f "packages/$(OUTPUT)-$(OSVAR)-x86-64.zip" ];then rm "packages/$(OUTPUT)-$(OSVAR)-x86-64.zip";fi
-	@zip -r "packages/$(OUTPUT)-$(OSVAR)-x86-64.zip" "$(OUTPUT).app"
+	@if [ -f "packages/$(OUTPUT)-$(OSVAR)-x86-64$(DEMO).zip" ];then rm "packages/$(OUTPUT)-$(OSVAR)-x86-64$(DEMO).zip";fi
+	zip -r "packages/$(OUTPUT)-$(OSVAR)-x86-64$(DEMO).zip" "$(OUTPUT)$(DEMO).app"
 endif
 	@$(ECHO) "Find the built archive under the packages directory."
-endif
-
-ifeq ($(HASDEMO),true)
-package_demo:
-	@$(ECHO) "Building demo release package"
-ifneq ($(OSVAR),mac)
-	@if [ -d distrib ]; then \
-	rm -rf distrib;\
-	fi
-	@mkdir distrib
-	@for x in "$(RESOURCES)";do \
-	cp -R $$x distrib;\
-done
-ifeq ($(OSVAR),linux)
-	@mkdir distrib/lib
-	@libPath=/usr/lib;\
-	allegroVersion="$$(ls -1 $${libPath}/liballegro.so.*.*.* | head -n 1)";\
-	allegroVersion="$${allegroVersion#*.so.}";\
-	opusVersion="$$(ls -1 $${libPath}/libopus.so.*.*.* | head -n 1)";\
-	opusVersion="$${opusVersion#*.so.}";\
-	opusfileVersion="$$(ls -1 $${libPath}/libopusfile.so.*.*.* | head -n 1)";\
-	opusfileVersion="$${opusfileVersion#*.so.}";\
-	speechdVersion="$$(ls -1 $${libPath}/libspeechd.so.*.*.* | head -n 1)";\
-	speechdVersion="$${speechdVersion#*.so.}";\
-	vorbisVersion="$$(ls -1 $${libPath}/libvorbis.so.*.*.* | head -n 1)";\
-	vorbisVersion="$${vorbisVersion#*.so.}";\
-	vorbisfileVersion="$$(ls -1 $${libPath}/libvorbisfile.so.*.*.* | head -n 1)";\
-	vorbisfileVersion="$${vorbisfileVersion#*.so.}";\
-	oggVersion="$$(ls -1 $${libPath}/libogg.so.*.*.* | head -n 1)";\
-	oggVersion="$${oggVersion#*.so.}";\
-	soFiles=(\
-	"liballegro.so.$${allegroVersion}" \
-	"liballegro_audio.so.$${allegroVersion}" \
-	"liballegro_acodec.so.$${allegroVersion}" \
-	"liballegro_font.so.$${allegroVersion}" \
-	"libopus.so.$${opusVersion}" \
-	"libopusfile.so.$${opusfileVersion}" \
-	"libspeechd.so.$${speechdVersion}" \
-	"libvorbis.so.$${vorbisVersion}" \
-	"libvorbisfile.so.$${vorbisfileVersion}" \
-	"libogg.so.$${oggVersion}"\
-	);\
-	for i in $${soFiles[@]} ; do \
-	if [[ "$$i" =~ liballegro* ]]; then \
-	cp "$${libPath}/$${i}" "distrib/lib/$${i%.*}";\
-	else \
-	cp "$${libPath}/$${i}" "distrib/lib/$${i%.*.*}";\
-	fi;\
-	done
-	@export LD_RUN_PATH="\$$ORIGIN/lib/";\
-	$(MAKE) demo;\
-	unset LD_RUN_PATH
-else
-	@for x in $$(ls -1 $(WINDLLDIR));do \
-	cp $$x distrib;\
-	done
-	@$(MAKE) demo
-endif
-	@cp $(OUTPUT) distrib
-	@if [ ! -d packages ];then mkdir packages;fi
-ifneq ($(OSVAR),win32)
-	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full ];then rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full;fi
-	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full
-	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full.tar.xz
-	@cd packages;\
-	tar -cJRf $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full.tar.xz $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full
-	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full
-else
-	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-demo ];then $(RM) -r packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-demo;fi
-	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-demo
-	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-demo.zip
-	@cd packages;\
-	7z a -r $(subst .exe,,$(OUTPUT))-$(OSVAR)-demo.zip $(subst .exe,,$(OUTPUT))-$(OSVAR)-demo
-	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-demo
-endif
-else
-	@if [ -d "$(OUTPUT)-demo.app" ];then rm -rf $(OUTPUT)-demo.app;fi
-	@mkdir $(OUTPUT)-demo.app
-	@mkdir -p $(OUTPUT)-demo.app/Contents/MacOS
-	@cp Info.plist $(OUTPUT)-demo.app/Contents
-	@cp $(OUTPUT)_launcher $(OUTPUT)-demo.app/Contents/MacOS
-	@mkdir $(OUTPUT)-demo.app/Contents/Resources
-	@for x in "$(RESOURCES)";do \
-	cp -R $$x $(OUTPUT)-demo.app/Contents/Resources;\
-	done
-	@$(MAKE) demo
-	@cp $(OUTPUT) $(OUTPUT)-demo.app/Contents/MacOS
-	@$(MAKE) fix_names_demo
-	@if [ ! -d packages ];then mkdir packages;fi
-	@if [ -f "packages/$(OUTPUT)-$(OSVAR)-x86-64-demo.zip" ];then rm "packages/$(OUTPUT)-$(OSVAR)-x86-64-demo.zip";fi
-	@zip -r "packages/$(OUTPUT)-$(OSVAR)-x86-64-demo.zip" "$(OUTPUT)-demo.app"
-endif
-	@$(ECHO) "Find the built archive under the packages directory."
-
-package_full:
-	@$(ECHO) "Building full release package"
-ifneq ($(OSVAR),mac)
-	@if [ -d distrib ]; then \
-	rm -rf distrib;\
-	fi
-	@mkdir distrib
-	@for x in "$(RESOURCES)";do \
-	cp -R $$x distrib;\
-done
-ifeq ($(OSVAR),linux)
-	@mkdir distrib/lib
-	@libPath=/usr/lib;\
-	allegroVersion="$$(ls -1 $${libPath}/liballegro.so.*.*.* | head -n 1)";\
-	allegroVersion="$${allegroVersion#*.so.}";\
-	opusVersion="$$(ls -1 $${libPath}/libopus.so.*.*.* | head -n 1)";\
-	opusVersion="$${opusVersion#*.so.}";\
-	opusfileVersion="$$(ls -1 $${libPath}/libopusfile.so.*.*.* | head -n 1)";\
-	opusfileVersion="$${opusfileVersion#*.so.}";\
-	speechdVersion="$$(ls -1 $${libPath}/libspeechd.so.*.*.* | head -n 1)";\
-	speechdVersion="$${speechdVersion#*.so.}";\
-	vorbisVersion="$$(ls -1 $${libPath}/libvorbis.so.*.*.* | head -n 1)";\
-	vorbisVersion="$${vorbisVersion#*.so.}";\
-	vorbisfileVersion="$$(ls -1 $${libPath}/libvorbisfile.so.*.*.* | head -n 1)";\
-	vorbisfileVersion="$${vorbisfileVersion#*.so.}";\
-	oggVersion="$$(ls -1 $${libPath}/libogg.so.*.*.* | head -n 1)";\
-	oggVersion="$${oggVersion#*.so.}";\
-	soFiles=(\
-	"liballegro.so.$${allegroVersion}" \
-	"liballegro_audio.so.$${allegroVersion}" \
-	"liballegro_acodec.so.$${allegroVersion}" \
-	"liballegro_font.so.$${allegroVersion}" \
-	"libopus.so.$${opusVersion}" \
-	"libopusfile.so.$${opusfileVersion}" \
-	"libspeechd.so.$${speechdVersion}" \
-	"libvorbis.so.$${vorbisVersion}" \
-	"libvorbisfile.so.$${vorbisfileVersion}" \
-	"libogg.so.$${oggVersion}"\
-	);\
-	for i in $${soFiles[@]} ; do \
-	if [[ "$$i" =~ liballegro* ]]; then \
-	cp "$${libPath}/$${i}" "distrib/lib/$${i%.*}";\
-	else \
-	cp "$${libPath}/$${i}" "distrib/lib/$${i%.*.*}";\
-	fi;\
-	done
-	@export LD_RUN_PATH="\$$ORIGIN/lib/";\
-	$(MAKE) full;\
-	unset LD_RUN_PATH
-else
-	@for x in $$(ls -1 $(WINDLLDIR));do \
-	cp $$x distrib;\
-	done
-	@$(MAKE) full
-endif
-	@cp $(OUTPUT) distrib
-	@if [ ! -d packages ];then mkdir packages;fi
-ifneq ($(OSVAR),win32)
-	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full ];then rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full;fi
-	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full
-	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full.tar.xz
-	@cd packages;\
-	tar -cJRf $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full.tar.xz $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full
-	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')-full
-else
-	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-full ];then $(RM) -r packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-full;fi
-	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-full
-	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-full.zip
-	@cd packages;\
-	7z a -r $(subst .exe,,$(OUTPUT))-$(OSVAR)-full.zip $(subst .exe,,$(OUTPUT))-$(OSVAR)-full
-	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-full
-endif
-else
-	@if [ -d "$(OUTPUT).app" ];then rm -rf $(OUTPUT).app;fi
-	@mkdir $(OUTPUT).app
-	@mkdir -p $(OUTPUT).app/Contents/MacOS
-	@cp Info.plist $(OUTPUT).app/Contents
-	@cp $(OUTPUT)_launcher $(OUTPUT).app/Contents/MacOS
-	@mkdir $(OUTPUT).app/Contents/Resources
-	@for x in "$(RESOURCES)";do \
-	cp -R $$x $(OUTPUT).app/Contents/Resources;\
-	done
-	@$(MAKE) full
-	@cp $(OUTPUT) $(OUTPUT).app/Contents/MacOS
-	@$(MAKE) fix_names
-	@if [ ! -d packages ];then mkdir packages;fi
-	@if [ -f "packages/$(OUTPUT)-$(OSVAR)-x86-64.zip" ];then rm "packages/$(OUTPUT)-$(OSVAR)-x86-64.zip";fi
-	@zip -r "packages/$(OUTPUT)-$(OSVAR)-x86-64.zip" "$(OUTPUT).app"
-endif
-	@$(ECHO) "Find the built archive under the packages directory."
-endif
-
-packageclean:
-	@$(ECHO) "Cleaning up packages"
-	@$(RM) -r packages
-
-fullclean: clean packageclean
 
 fix_names:
-	mkdir $(OUTPUT).app/Contents/MacOS/lib;\
-	macpack $(OUTPUT).app/Contents/MacOS/$(OUTPUT) -d lib
-
-fix_names_demo:
-	mkdir $(OUTPUT)-demo.app/Contents/MacOS/lib;\
-	macpack $(OUTPUT)-demo.app/Contents/MacOS/$(OUTPUT) -d lib
+	mkdir $(OUTPUT)$(DEMO).app/Contents/MacOS/lib;\
+	macpack $(OUTPUT)$(DEMO).app/Contents/MacOS/$(OUTPUT) -d lib
