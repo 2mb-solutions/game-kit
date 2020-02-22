@@ -1,6 +1,7 @@
 # makefile to style .h and .cpp files properly. Type make format
 # generic variables
 ECHO = echo
+RM = rm -f
 
 #formatting specific flags
 FORMATTER = astyle
