@@ -1,24 +1,33 @@
 # makefile for mine racer and 2MB projects.
 # adapted from the aspen mud makefile.
 #compiler and project specific variables
-OUTPUT=mineracer
+OUTPUT = mineracer
 
 #compiler flags:
 #enable if you want to profile.
 PROF =
-LINCFLAGS	= -g -std=c++11 -O2 -march=native -Wall -pedantic -Wextra -Wno-unused-variable -Wno-unused-parameter -I/usr/include/speech-dispatcher -I/usr/include -Igame-kit/allegro_stuff -Igame-kit/screen-reader -Igame-kit
-MACCFLAGS       = -g -std=c++11 -O2 -march=native -Wall -pedantic -Wextra -Wno-unused-variable -Wno-unused-parameter -I/usr/include -Igame-kit/allegro_stuff -Igame-kit/screen-reader -Igame-kit -Igame-kit/allegro_stuff/include-mac -framework ApplicationServices -framework OpenGL -framework OpenAL -framework AppKit -framework CoreFoundation -framework AudioToolbox -framework IOKit
-WINCFLAGS=/nologo /EHsc /MT /Igame-kit/allegro_stuff /Igame-kit/screen-reader /Igame-kit/allegro_stuff/include-win /Igame-kit
+LINCXXFLAGS = -g -std=c++11 -O2 -march=native -Wall -pedantic -Wextra -Wno-unused-variable \
+ -Wno-unused-parameter -I/usr/include/speech-dispatcher -I/usr/include -Igame-kit/allegro_stuff \
+ -Igame-kit/screen-reader -Igame-kit
+MACCXXFLAGS = -g -std=c++11 -O2 -march=native -Wall -pedantic -Wextra \
+ -Wno-unused-variable -Wno-unused-parameter -I/usr/include -Igame-kit/allegro_stuff \
+ -Igame-kit/screen-reader -Igame-kit -Igame-kit/allegro_stuff/include-mac \
+ -framework ApplicationServices -framework OpenGL -framework OpenAL -framework AppKit \
+ -framework CoreFoundation -framework AudioToolbox -framework IOKit
+WINCXXFLAGS = /nologo /EHsc /MT /Igame-kit/allegro_stuff /Igame-kit/screen-reader \
+ /Igame-kit/allegro_stuff/include-win /Igame-kit
 
 #required libraries
-LINLDFLAGS	= -lallegro_audio -lallegro_acodec -lallegro -lallegro_font -lspeechd
-MACLDFLAGS      = -L/usr/local/lib -lallegro_main -lallegro_audio -lallegro_acodec -lallegro -lallegro_font -framework ApplicationServices -framework OpenGL -framework OpenAL -framework AppKit -framework CoreFoundation -framework AudioToolbox -framework IOKit
-WINLDFLAGS=/nologo /subsystem:windows,5.01 /libpath:game-kit/allegro_stuff/win-lib32 \
-/libpath:game-kit/screen-reader dolapi.lib saapi32.lib nvdaControllerClient32.lib allegro_acodec.lib  allegro_audio.lib allegro.lib allegro_font.lib \
-FLAC.lib opengl32.lib ogg.lib vorbis.lib vorbisfile.lib dumb.lib freetype.lib winmm.lib psapi.lib gdi32.lib opus.lib opusfile.lib
+LINLDFLAGS = -lallegro_audio -lallegro_acodec -lallegro -lallegro_font -lspeechd
+MACLDFLAGS = -L/usr/local/lib -lallegro_main -lallegro_audio -lallegro_acodec \
+ -lallegro -lallegro_font -framework ApplicationServices -framework OpenGL \
+ -framework OpenAL -framework AppKit -framework CoreFoundation -framework AudioToolbox -framework IOKit
+WINLDFLAGS = /nologo /subsystem:windows,5.01 /libpath:game-kit/allegro_stuff/win-lib32 \
+ /libpath:game-kit/screen-reader dolapi.lib saapi32.lib nvdaControllerClient32.lib allegro_acodec.lib  allegro_audio.lib allegro.lib allegro_font.lib \
+ FLAC.lib opengl32.lib ogg.lib vorbis.lib vorbisfile.lib dumb.lib freetype.lib winmm.lib psapi.lib gdi32.lib opus.lib opusfile.lib
 
 # directory with windows dlls to copy
-WINDLLDIR=game-kit/{allegro_stuff,screen-reader}/win-distrib32/*
+WINDLLDIR = game-kit/{allegro_stuff,screen-reader}/win-distrib32/*
 #formatting specific flags
 FORMATTER = astyle
 FORMAT_FLAGS = --style=gnu -Q
@@ -29,29 +38,30 @@ ECHO = echo
 
 	#source files to compile:
 # game-kit files, only update if game-kit has been updated.
-GK_S_FILES= game-kit/allegro_stuff/sound.cpp game-kit/allegro_stuff/keyboard.cpp game-kit/screen-reader/screen_reader.cpp \
-game-kit/allegro_stuff/dynamic_menu.cpp game-kit/menu_helper.cpp game-kit/misc.cpp game-kit/soundplayer.cpp game-kit/allegro_stuff/sound_pool_item.cpp \
-game-kit/allegro_stuff/sound_pool.cpp
+GK_S_FILES = game-kit/allegro_stuff/sound.cpp game-kit/allegro_stuff/keyboard.cpp \
+ game-kit/screen-reader/screen_reader.cpp game-kit/allegro_stuff/dynamic_menu.cpp \
+ game-kit/menu_helper.cpp game-kit/misc.cpp game-kit/soundplayer.cpp \
+ game-kit/allegro_stuff/sound_pool_item.cpp game-kit/allegro_stuff/sound_pool.cpp
 # regular source files, specific to the game.
-S_FILES= scores.cpp play.cpp game.cpp
+S_FILES = scores.cpp play.cpp game.cpp
 
 # does this program have a demo?
-HASDEMO=true
+HASDEMO = true
 # or if not
-#HASDEMO=
+#HASDEMO =
 
 ifeq ($(HASDEMO),true)
 # files that depend on demo.h
 # these files should be updated per project
-DEMO_H_FILES= play.cpp
+DEMO_H_FILES = play.cpp
 
 # demo and full program defines in demo.h
-DEMODEFINE=\#define DEMO true
-FULLDEFINE=\#define DEMO false
+DEMODEFINE = \#define DEMO true
+FULLDEFINE = \#define DEMO false
 endif
 
 # resources, items that should be copied into the package. (no spaces for now)
-RESOURCES=sounds credits.txt manual.txt
+RESOURCES = sounds manual.txt credits.txt
 
 ###
 ###YOU SHOULD NOT MODIFY ANYTHING PAST THIS POINT.
@@ -63,36 +73,37 @@ export DEMO ?=
 
 # os variables for os specific compilation and packaging.
 ifeq ($(OS),Windows_NT)
-CXX=cl
-CFLAGS = $(WINCFLAGS)
-LDFLAGS=$(WINLDFLAGS)
-OUTPUT:=$(OUTPUT).exe
+CXX := $(or $(strip $(CXX)),cl)
+CXXFLAGS := $(WINCXXFLAGS) $(CXXFLAGS)
+LDFLAGS := $(WINLDFLAGS) $(LDFLAGS)
+OUTPUT := $(OUTPUT).exe
 #program defines
-MAKE=mingw32-make -s
-LINK=link
-OSVAR=win32
+MAKE := $(or $(strip $(MAKE)),mingw32-make -s)
+LINK = link
+OSVAR = win32
 else
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-CXX=g++
-CFLAGS=$(LINCFLAGS)
-LDFLAGS=$(LINLDFLAGS)
+CXX := $(or $(strip $(CXX)),g++)
+CXXFLAGS := $(LINCXXFLAGS) $(CXXFLAGS)
+LDFLAGS := $(LINLDFLAGS) $(LDFLAGS)
 
 #program defines
-MAKE=make -s
-OSVAR=linux
+MAKE := $(or $(strip $(MAKE)),make -s)
+OSVAR = linux
 else #macOS
-CXX=g++
-CFLAGS=$(MACCFLAGS)
-LDFLAGS=$(MACLDFLAGS)
+CXX := $(or $(strip $(CXX)),g++)
+CXXFLAGS := $(MACCXXFLAGS) $(CXXFLAGS)
+LDFLAGS := $(MACLDFLAGS) $(LDFLAGS)
 
 #program defines
-MAKE=make -s
-OSVAR=mac
+MAKE := $(or $(strip $(MAKE)),make -s)
+OSVAR = mac
 endif
 endif
 
 ifneq ($(OSVAR),win32)
+
 O_FILES += $(patsubst %.cpp,%.o, $(filter %.cpp, $(S_FILES)))
 O_FILES += $(patsubst %.cpp,%.o, $(filter %.cpp, $(GK_S_FILES)))
 else
@@ -100,11 +111,13 @@ O_FILES += $(patsubst %.cpp,%.obj, $(filter %.cpp, $(S_FILES)))
 O_FILES += $(patsubst %.cpp,%.obj, $(filter %.cpp, $(GK_S_FILES)))
 endif
 
-all: $(O_FILES)
+all: $(OUTPUT)
+
+$(OUTPUT): $(O_FILES)
 	@$(RM) $(OUTPUT)
 	@$(ECHO) "Linking."
 ifneq ($(OSVAR),win32)
-	@$(CXX) $(CFLAGS) -o $(OUTPUT) $(O_FILES) $(LDFLAGS)
+	@$(CXX) $(CXXFLAGS) -o $(OUTPUT) $(O_FILES) $(LDFLAGS)
 else
 	@$(LINK) $(O_FILES) $(LDFLAGS) /out:$(OUTPUT)
 endif
@@ -116,9 +129,9 @@ else
 endif
 	@$(ECHO) "Compiling $<."
 ifneq ($(OSVAR),win32)
-	@$(CXX) $(PROF) -c $(CFLAGS) -o $(patsubst %.cpp,%.o, $<) $<
+	@$(CXX) $(PROF) -c $(CXXFLAGS) -o $(patsubst %.cpp,%.o, $<) $<
 else
-	@$(CXX) /c $(CFLAGS) /Fo$(subst .cpp,.obj,$<) $<
+	@$(CXX) /c $(CXXFLAGS) /Fo$(subst .cpp,.obj,$<) $<
 endif
 
 ifeq ($(HASDEMO),true)
@@ -136,7 +149,7 @@ fullclean: clean packageclean
 
 packageclean:
 	@$(ECHO) "Cleaning up packages."
-	@rm -rf packages
+	@$(RM) -r packages
 
 clean:
 	@$(ECHO) "Cleaning objects and other binary files"
@@ -147,7 +160,7 @@ format:
 ifneq ($(OSVAR),win32)
 	@$(ECHO) "Formatting"
 	@$(FORMATTER) $(FORMAT_FLAGS) $(S_FILES)
-	@find . -name "*.orig" -exec rm -rf {} \;
+	@find . -name "*.orig" -exec $(RM) -f {} \;
 	@$(ECHO) "Done."
 else
 	@$(ECHO) "Formatting isn't implemented on windows yet"
@@ -182,7 +195,7 @@ do_package:
 	@$(ECHO) "Building release package"
 ifneq ($(OSVAR),mac)
 	@if [ -d distrib ]; then \
-	rm -rf distrib;\
+	$(RM) -r distrib;\
 	fi
 	@mkdir distrib
 	@for x in "$(RESOURCES)";do \
@@ -236,22 +249,22 @@ endif
 	@cp $(OUTPUT) distrib
 	@if [ ! -d packages ];then mkdir packages;fi
 ifneq ($(OSVAR),win32)
-	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO) ];then rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO);fi
+	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO) ];then $(RM) -r packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO);fi
 	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO)
 	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO).tar.xz
 	@cd packages;\
 	tar -cJRf $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO).tar.xz $(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO)
-	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO)
+	@$(RM) -r packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)-$$(uname -m |tr '_' '-')$(DEMO)
 else
 	@if [ -d packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO) ];then $(RM) -r packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO);fi
 	@mv distrib packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO)
 	@$(RM) packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO).zip
 	@cd packages;\
 	7z a -r $(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO).zip $(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO)
-	@rm -rf packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO)
+	@$(RM) -r packages/$(subst .exe,,$(OUTPUT))-$(OSVAR)$(DEMO)
 endif
 else
-	@if [ -d "$(OUTPUT)$(DEMO).app" ];then rm -rf $(OUTPUT)$(DEMO).app;fi
+	@if [ -d "$(OUTPUT)$(DEMO).app" ];then $(RM) -r $(OUTPUT)$(DEMO).app;fi
 	@mkdir $(OUTPUT)$(DEMO).app
 	@mkdir -p $(OUTPUT)$(DEMO).app/Contents/MacOS
 	@cp Info.plist $(OUTPUT)$(DEMO).app/Contents
@@ -264,11 +277,11 @@ else
 	@cp $(OUTPUT) $(OUTPUT)$(DEMO).app/Contents/MacOS
 	@$(MAKE) fix_names
 	@if [ ! -d packages ];then mkdir packages;fi
-	@if [ -f "packages/$(OUTPUT)-$(OSVAR)-x86-64$(DEMO).zip" ];then rm "packages/$(OUTPUT)-$(OSVAR)-x86-64$(DEMO).zip";fi
+	@if [ -f "packages/$(OUTPUT)-$(OSVAR)-x86-64$(DEMO).zip" ];then $(RM) "packages/$(OUTPUT)-$(OSVAR)-x86-64$(DEMO).zip";fi
 	zip -r "packages/$(OUTPUT)-$(OSVAR)-x86-64$(DEMO).zip" "$(OUTPUT)$(DEMO).app"
 endif
 	@$(ECHO) "Find the built archive under the packages directory."
 
 fix_names:
-	mkdir $(OUTPUT)$(DEMO).app/Contents/MacOS/lib;\
-	macpack $(OUTPUT)$(DEMO).app/Contents/MacOS/$(OUTPUT) -d lib
+	@mkdir $(OUTPUT)$(DEMO).app/Contents/MacOS/lib;\
+	@macpack $(OUTPUT)$(DEMO).app/Contents/MacOS/$(OUTPUT) -d lib
